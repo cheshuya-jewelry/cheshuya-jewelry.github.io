@@ -266,6 +266,18 @@
     .footer__bottom { font-size: 13px; opacity: .6; border-top: 1px solid rgba(241, 232, 218, .15); padding-top: 20px; }
 
 
+    /* Кнопка «Наверх» */
+    .to-top {
+      position: fixed; z-index: 31; right: 16px; bottom: calc(80px + env(safe-area-inset-bottom));
+      width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--copper); color: var(--pearl); text-decoration: none;
+      box-shadow: 0 10px 22px -10px rgba(44, 62, 47, .8);
+      transition: opacity .25s, transform .25s, background .2s;
+    }
+    .to-top:hover { background: var(--copper-dim); }
+    .to-top svg { width: 22px; height: 22px; }
+    .to-top.is-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
+
     /* Плавающая кнопка на телефоне */
     .sticky-tg {
       position: fixed; z-index: 30; left: 16px; right: 16px; bottom: calc(12px + env(safe-area-inset-bottom));
@@ -287,6 +299,7 @@
       .carousel__btn--next { right: 32px; }
       body { padding-bottom: 0; }
       .sticky-tg { display: none; }
+      .to-top { right: 32px; bottom: 32px; width: 52px; height: 52px; }
       .header .wrap { flex-wrap: nowrap; padding-top: 0; }
       .nav { width: auto; margin: 0; padding: 0; gap: 24px; overflow: visible; }
       .nav a { font-size: 14px; }
@@ -318,7 +331,7 @@
     <symbol id="i-flower" viewBox="-31 -31 62 62"><g fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="0.00" cy="0.00" r="10"/><circle cx="10.00" cy="0.00" r="10"/><circle cx="20.00" cy="0.00" r="10"/><circle cx="15.00" cy="8.66" r="10"/><circle cx="5.00" cy="8.66" r="10"/><circle cx="10.00" cy="17.32" r="10"/><circle cx="0.00" cy="17.32" r="10"/><circle cx="-5.00" cy="8.66" r="10"/><circle cx="-10.00" cy="17.32" r="10"/><circle cx="-15.00" cy="8.66" r="10"/><circle cx="-10.00" cy="0.00" r="10"/><circle cx="-20.00" cy="0.00" r="10"/><circle cx="-15.00" cy="-8.66" r="10"/><circle cx="-5.00" cy="-8.66" r="10"/><circle cx="-10.00" cy="-17.32" r="10"/><circle cx="-0.00" cy="-17.32" r="10"/><circle cx="5.00" cy="-8.66" r="10"/><circle cx="10.00" cy="-17.32" r="10"/><circle cx="15.00" cy="-8.66" r="10"/></g></symbol>
   </svg>
 
-  <header class="header">
+  <header class="header" id="page-top">
     <div class="wrap">
       <a class="logo" href="#top" aria-label="CHESHUYA — в начало">CHESHUYA</a>
       <nav class="nav" aria-label="Разделы">
@@ -775,7 +788,19 @@
   <a class="btn btn--copper sticky-tg" href="https://t.me/Hyperfurser" target="_blank" rel="noopener">
     <svg class="tg-icon" aria-hidden="true"><use href="#i-tg"/></svg>Написать в Telegram
   </a>
+  <a class="to-top" href="#page-top" aria-label="Наверх">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
   <script>
+    // Кнопка «Наверх»: видна после прокрутки на один экран. Без JS видна всегда.
+    (function () {
+      var btn = document.querySelector('.to-top');
+      if (!btn) return;
+      function update() { btn.classList.toggle('is-hidden', window.scrollY < window.innerHeight * 0.8); }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+
     // Карточка «Уже нашли своих хозяек»: одно фото, стрелки, точки и автолистание. Без JS фото листаются прокруткой.
     (function () {
       var root = document.querySelector('.carousel');
